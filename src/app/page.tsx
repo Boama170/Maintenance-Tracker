@@ -4,7 +4,6 @@ function Page() {
   return (
     <div>
       <DashBoard />
-      <p className='text-5xl'>HI</p>
     </div>
   )
 }

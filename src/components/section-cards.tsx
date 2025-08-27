@@ -1,102 +1,70 @@
-import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react"
-
-import { Badge } from "@/components/ui/badge"
 import {
   Card,
-  CardAction,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+  CardContent,
+  CardDescription,
+  CardFooter,
+} from "@/components/ui/card";
 
 export function SectionCards() {
   return (
-    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
-      <Card className="@container/card">
-        <CardHeader>
-          <CardDescription>Total Revenue</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            $1,250.00
-          </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <IconTrendingUp />
-              +12.5%
-            </Badge>
-          </CardAction>
-        </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Trending up this month <IconTrendingUp className="size-4" />
-          </div>
-          <div className="text-muted-foreground">
-            Visitors for the last 6 months
-          </div>
-        </CardFooter>
-      </Card>
-      <Card className="@container/card">
-        <CardHeader>
-          <CardDescription>New Customers</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            1,234
-          </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <IconTrendingDown />
-              -20%
-            </Badge>
-          </CardAction>
-        </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Down 20% this period <IconTrendingDown className="size-4" />
-          </div>
-          <div className="text-muted-foreground">
-            Acquisition needs attention
-          </div>
-        </CardFooter>
-      </Card>
-      <Card className="@container/card">
-        <CardHeader>
-          <CardDescription>Active Accounts</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            45,678
-          </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <IconTrendingUp />
-              +12.5%
-            </Badge>
-          </CardAction>
-        </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Strong user retention <IconTrendingUp className="size-4" />
-          </div>
-          <div className="text-muted-foreground">Engagement exceed targets</div>
-        </CardFooter>
-      </Card>
-      <Card className="@container/card">
-        <CardHeader>
-          <CardDescription>Growth Rate</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            4.5%
-          </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <IconTrendingUp />
-              +4.5%
-            </Badge>
-          </CardAction>
-        </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Steady performance increase <IconTrendingUp className="size-4" />
-          </div>
-          <div className="text-muted-foreground">Meets growth projections</div>
-        </CardFooter>
-      </Card>
+    <div>
+      <div className="cards flex flex-row gap-6 -mt-2 p-4">
+        {/* Card 1 */}
+        <Card className="bg-[#CFCFCF]  flex flex-row border-none shadow-sm w-full h-[80px]">
+          <CardHeader className="flex flex-row items-center gap-3 p-4">
+            <div className="circle bg-[#9C9C9C] rounded-full p-3">
+              <svg width="15" height="14" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fillRule="evenodd" clipRule="evenodd" d="M20.3547 1.06393L20.2114 0H16.8581L16.7144 1.06325L16.6248 1.72198L16.4487 1.8222L16.291 1.92458L15.6979 1.67608L14.7421 1.27587L14.226 2.20334L13.5844 3.35635L13.0674 4.28542L13.88 4.94741L14.382 5.35624L14.3804 5.37537C14.3775 5.43646 14.376 5.49761 14.3759 5.55877L14.3804 5.7407L14.3832 5.76635L13.8801 6.17665L13.0671 6.83858L13.5842 7.7679L14.2261 8.92152L14.7421 9.84887L15.6979 9.44884L16.2898 9.20047L16.4544 9.30752L16.6248 9.40307L16.7128 10.0538L16.8562 11.1176H20.2092L20.3531 10.0544L20.4416 9.39439L20.6187 9.29546L20.7754 9.1918L21.3694 9.44146L22.3254 9.84167L22.8414 8.9142L23.483 7.76125L24 6.83218L23.1874 6.17019L22.6856 5.76137L22.6869 5.74223C22.6899 5.6803 22.6914 5.61915 22.6914 5.55877L22.687 5.37691L22.6844 5.34879L23.1876 4.94028L24 4.27828L23.483 3.34928L22.8413 2.19602L22.3253 1.26874L21.3696 1.66876L20.7766 1.9159L20.613 1.81002L20.4416 1.71331L20.3547 1.06393ZM18.6503 8.02937C19.9625 8.02937 21.0261 6.92324 21.0261 5.55877C21.0261 4.1943 19.9625 3.08823 18.6503 3.08823C17.3381 3.08823 16.2745 4.1943 16.2745 5.55877C16.2745 6.92324 17.3381 8.02937 18.6503 8.02937ZM7.28756 10.9463L7.14425 9.88233H3.791L3.64719 10.9455L3.55762 11.6043L3.38163 11.7045L3.22381 11.8069L2.63075 11.5585L1.67494 11.1583L1.15887 12.0857L0.51725 13.2387L0.000249863 14.1678L0.81275 14.8298L1.31481 15.2386L1.31337 15.2577C1.31038 15.3188 1.30886 15.38 1.30881 15.4412L1.31325 15.623L1.31606 15.6487L0.812938 16.059L0 16.7209L0.517063 17.6502L1.15894 18.8039L1.67494 19.7312L2.63069 19.3312L3.22262 19.0828L3.38725 19.1899L3.55762 19.2854L3.64575 19.9361L3.78912 21H7.14213L7.28594 19.9368L7.37444 19.2767L7.5515 19.1778L7.70825 19.0742L8.30237 19.3238L9.25819 19.7241L9.77425 18.7966L10.4159 17.6436L10.9329 16.7145L10.1203 16.0525L9.61844 15.6438L9.61975 15.6246C9.62275 15.5626 9.62427 15.5015 9.62431 15.4412L9.61987 15.2593L9.61725 15.2312L10.1204 14.8227L10.9329 14.1607L10.4159 13.2317L9.77419 12.0784L9.25819 11.1511L8.30244 11.5511L7.70944 11.7983L7.54587 11.6924L7.37444 11.5957L7.28756 10.9463ZM5.58319 17.9118C6.89531 17.9118 7.959 16.8056 7.959 15.4412C7.959 14.0766 6.89531 12.9706 5.58319 12.9706C4.271 12.9706 3.20731 14.0766 3.20731 15.4412C3.20731 16.8057 4.271 17.9118 5.58319 17.9118ZM24 18.375H12V21H24V18.375ZM0 0H12V2.62496H0V0ZM12 7.87495H9.33331V10.5H12V7.87495Z" fill="black"/>
+              </svg>
+            </div>
+            <CardTitle className="text-sm font-light mt-2 text-black">
+              Total Machines
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="ms-auto text-black text-3xl">
+            500+
+          </CardContent>
+        </Card>
+
+        {/* Card 2 */}
+        <Card className="bg-accent/60 flex flex-row place-content-center border-none shadow-sm w-full h-[80px]">
+        <CardHeader className="flex flex-row items-center gap-3 p-4">
+            <div className="circle bg-[#A75456] rounded-full p-3">
+            <svg width="15" height="15" viewBox="0 0 27 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0.8125 2.84375C0.8125 1.5155 1.75983 0.4375 2.92708 0.4375H24.0729C25.2402 0.4375 26.1875 1.5155 26.1875 2.84375V20.0312C26.1875 20.6694 25.9647 21.2815 25.5682 21.7327C25.1716 22.184 24.6337 22.4375 24.0729 22.4375H12.4898C12.4501 22.4374 12.4108 22.4462 12.3741 22.4635C12.3374 22.4807 12.3041 22.506 12.276 22.5379L8.04679 27.3504C7.80035 27.6297 7.48675 27.8198 7.14552 27.8967C6.80428 27.9736 6.45069 27.9338 6.1293 27.7823C5.80792 27.6308 5.53313 27.3745 5.33958 27.0456C5.14602 26.7167 5.04236 26.33 5.04167 25.9341V22.4375H2.92708C2.36626 22.4375 1.82841 22.184 1.43185 21.7327C1.03529 21.2815 0.8125 20.6694 0.8125 20.0312V2.84375ZM2.92708 2.5C2.84697 2.5 2.77013 2.53622 2.71348 2.60068C2.65683 2.66515 2.625 2.75258 2.625 2.84375V20.0312C2.625 20.221 2.76033 20.375 2.92708 20.375H5.94792C6.18827 20.375 6.41878 20.4836 6.58873 20.677C6.75869 20.8704 6.85417 21.1327 6.85417 21.4062V25.7925L10.9951 21.0804C11.3915 20.629 11.9291 20.3753 12.4898 20.375H24.0729C24.153 20.375 24.2299 20.3388 24.2865 20.2743C24.3432 20.2099 24.375 20.1224 24.375 20.0312V2.84375C24.375 2.75258 24.3432 2.66515 24.2865 2.60068C24.2299 2.53622 24.153 2.5 24.0729 2.5H2.92708ZM13.5 5.25C13.7404 5.25 13.9709 5.35865 14.1408 5.55205C14.3108 5.74544 14.4062 6.00775 14.4062 6.28125V11.7812C14.4062 12.0548 14.3108 12.3171 14.1408 12.5105C13.9709 12.7038 13.7404 12.8125 13.5 12.8125C13.2596 12.8125 13.0291 12.7038 12.8592 12.5105C12.6892 12.3171 12.5938 12.0548 12.5938 11.7812V6.28125C12.5938 6.00775 12.6892 5.74544 12.8592 5.55205C13.0291 5.35865 13.2596 5.25 13.5 5.25ZM13.5 17.625C13.1795 17.625 12.8722 17.4801 12.6456 17.2223C12.419 16.9644 12.2917 16.6147 12.2917 16.25C12.2917 15.8853 12.419 15.5356 12.6456 15.2777C12.8722 15.0199 13.1795 14.875 13.5 14.875C13.8205 14.875 14.1278 15.0199 14.3544 15.2777C14.581 15.5356 14.7083 15.8853 14.7083 16.25C14.7083 16.6147 14.581 16.9644 14.3544 17.2223C14.1278 17.4801 13.8205 17.625 13.5 17.625Z" fill="white"/>
+            </svg>
+
+            </div>
+            <CardTitle className="text-sm font-light mt-2 text-white">
+              Total Incidents
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="ms-auto text-white text-3xl">
+            240
+          </CardContent>
+        </Card>
+      
+        {/* Card 3 */}
+        <Card className="bg-[#FED30F]/60 flex flex-row place-content-center border-none shadow-sm w-full h-[80px]">
+        <CardHeader className="flex flex-row items-center gap-3 p-4">
+            <div className="circle bg-[#C5B35F] rounded-full p-3">
+            <svg width="16" height="16" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1.313 0L0 1.313L2.313 5.313L3.813 5.093L12.969 14.25L12.188 15C11.788 15.4 11.788 16.006 12.188 16.406L12.594 16.813C12.994 17.213 13.606 17.213 13.906 16.813L15.094 18C14.994 18.6 15.094 19.313 15.594 19.813L21 25.188C22.1 26.288 23.9 26.288 25 25.188C26.3 23.988 26.288 22.194 25.188 21.094L19.813 15.687C19.313 15.187 18.6 14.987 18 15.187L16.687 14C16.987 13.6 16.987 12.988 16.687 12.687L16.312 12.313C16.2211 12.2182 16.112 12.1428 15.9911 12.0912C15.8703 12.0397 15.7403 12.0131 15.609 12.0131C15.4777 12.0131 15.3477 12.0397 15.2269 12.0912C15.106 12.1428 14.9969 12.2182 14.906 12.313L14.25 12.969L5.094 3.813L5.312 2.313L1.313 0ZM20.813 0.031C18.84 -0.133 16.224 1.175 15 2.312C13.494 3.818 13.74 5.787 14.937 7.688L12.813 9.813L14.313 11.5C15.113 10.8 16.293 10.8 17.093 11.5L17.5 11.906L17.594 12L18.469 11.125C20.277 12.188 22.159 12.341 23.594 10.906C24.994 9.606 26.512 6.4 25.812 4.5L23 7.406C22.6 7.806 21.994 7.806 21.594 7.406L18.687 4.5C18.5922 4.40909 18.5168 4.29995 18.4652 4.17914C18.4137 4.05833 18.3871 3.92834 18.3871 3.797C18.3871 3.66566 18.4137 3.53567 18.4652 3.41486C18.5168 3.29405 18.5922 3.18491 18.687 3.094L21.595 0.188C21.345 0.1 21.095 0.055 20.813 0.031ZM9.813 12.5L6.187 16.125C5.7973 16.0388 5.39911 15.9968 5 16C2.2 16 0 18.2 0 21C0 23.8 2.2 26 5 26C7.8 26 10 23.8 10 21C10 20.487 9.919 19.994 9.781 19.531L11.906 17.406L11.594 17C10.794 16.2 10.8 14.988 11.5 14.187L9.813 12.5ZM17.563 17.063C17.688 17.063 17.806 17.087 17.906 17.188L23.813 23.094C24.013 23.294 24.013 23.612 23.813 23.812C23.613 24.012 23.293 24.012 23.093 23.812L17.188 17.906C16.988 17.706 16.988 17.388 17.188 17.188C17.288 17.088 17.438 17.063 17.563 17.063ZM5.688 18.405L7.594 20.312L6.906 22.905L4.313 23.593L2.406 21.686L3.094 19.093L5.688 18.405Z" fill="black"/>
+            </svg>
+            </div>
+            <CardTitle className="text-sm font-light mt-2 text-black">
+              Maintenance
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="ms-auto text-black text-3xl">
+            9
+          </CardContent>
+        </Card>
+
+       
+      </div>
     </div>
-  )
+  );
 }
