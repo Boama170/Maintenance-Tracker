@@ -67,14 +67,14 @@ export function IncidentsCard() {
   }
 
   return (
-    <Card className="border-none shadow-md text-black w-13/22 h-1/4">
+    <Card className="border-none shadow-md text-black w-[69%] pe-4 ">
       <CardHeader className="pb-2">
         <CardTitle className="text-sm font-semibold">Incidents</CardTitle>
       </CardHeader>
       <CardContent className="p-2">
         <div className="flex flex-col lg:flex-row">
           {/* Left side - Donut Chart with Legend */}
-          <div className="flex-1 flex flex-row items-center gap-2">
+          <div className="flex-1 flex  flex-row-reverse items-center gap-2">
             <div className="relative w-32 h-32">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>

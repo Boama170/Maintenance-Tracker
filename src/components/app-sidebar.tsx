@@ -1,9 +1,8 @@
 "use client"
 import * as React from "react"
-import { Home, Settings, Calendar, Store, FileText, AlertTriangle, TrendingUp } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-
+import { HomeIcon, IncidentsIcon, ScheduleIcon, StoreIcon, ReportIcon, MachinesIcon, OutputIcon } from "@/components/ui/icons"
 import {
   Sidebar,
   SidebarContent,
@@ -14,16 +13,17 @@ import {
   SidebarRail,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { Home } from "lucide-react"
 
 const data = {
   navMain: [
-    { title: "Home", url: "/", icon: Home },
-    { title: "Machines", url: "/machines", icon: Settings },
-    { title: "Schedule", url: "/schedule", icon: Calendar },
-    { title: "Stores", url: "/stores", icon: Store },
-    { title: "Report", url: "/report", icon: FileText },
-    { title: "Incidents", url: "/incidents", icon: AlertTriangle },
-    { title: "Production Output", url: "/production-output", icon: TrendingUp },
+    { title: "Dashboard", url: "/", icon: HomeIcon },
+    { title: "Machines", url: "/machines", icon: MachinesIcon },
+    { title: "Schedule", url: "/schedule", icon: ScheduleIcon },
+    { title: "Stores", url: "/stores", icon: StoreIcon },
+    { title: "Report", url: "/report", icon: ReportIcon },
+    { title: "Incidents", url: "/incidents", icon: IncidentsIcon },
+    { title: "Production Output", url: "/production-output", icon: OutputIcon },
   ],
 }
 
@@ -31,7 +31,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname()
 
   return (
-    <Sidebar {...props}>
+    <Sidebar {...props} className="w-54">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -41,11 +41,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <Home className="size-4" />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-medium">Dashboard</span>
+                  <span className="font-medium">SecPrint</span>
                 </div>
               </Link>
             </SidebarMenuButton>
-          </SidebarMenuItem>
+          </SidebarMenuItem> 
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
@@ -56,9 +56,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenuButton asChild>
                   <Link
                     href={item.url}
-                    className={`font-medium flex items-center gap-2 ${pathname === item.url ? "bg-accent text-accent-foreground" : ""}`}
+                    className={`font-medium flex items-center gap-2`}
                   >
-                    <item.icon className="size-4" />
+                    <item.icon/>
                     {item.title}
                   </Link>
                 </SidebarMenuButton>

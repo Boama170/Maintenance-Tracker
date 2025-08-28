@@ -46,7 +46,7 @@ export function ChartLineMultiple() {
   return (
     <Card className="w-full min-w-[700px] max-h-[310px] p-4 -mt-2 border-none shadow-md">
       <CardHeader>
-        <CardTitle className="text-lg text-black">Maintenance</CardTitle>
+        <CardTitle className="font-light text-black">Maintenance</CardTitle>
         <CardDescription className="flex text-gray-300 ms-auto gap-5 text-xs">
           <span>Daily</span>
           <span>Weekly</span>
@@ -54,8 +54,8 @@ export function ChartLineMultiple() {
           <span>Yearly</span>
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex">
-        <CardDescription className="mt-2 flex flex-col gap-6 text-xs text-gray-500">
+      <CardContent className="flex -ms-4 -mt-4">
+        <CardDescription className="mt-2 flex flex-col gap-6 text-xs font-mono text-gray-500">
           <p>Current maintenance made</p>
           <p>Current maintenance remaining</p>
         </CardDescription>
@@ -108,8 +108,8 @@ export function ChartLineMultiple() {
           </LineChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex items-center -mt-8 justify-between">
-        <Button className="bg-[#0E2B81] text-white text-sm px-3 py-1 -mt-14 rounded-4xl hover:bg-blue-700">Last Week Summary</Button>
+      <CardFooter className="flex items-center p-3 -mt-8 justify-between">
+        <Button className="bg-[#0E2B81] text-white text-xs px-2 py-1 -mt-14 rounded-4xl hover:bg-blue-700">Last Week Summary</Button>
         <div className="space-x-6 text-xs flex flex-row">
           <div className="text-black flex items-center gap-1">
             <div className="w-3 h-3 bg-red-500 rounded-full"></div>

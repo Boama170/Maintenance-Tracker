@@ -35,7 +35,7 @@ export default function RootLayout({
       >
      <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>{children}</SidebarInset>
+      <SidebarInset className="-ms-8" >{children}</SidebarInset>
     </SidebarProvider>
       </body>
     </html>
