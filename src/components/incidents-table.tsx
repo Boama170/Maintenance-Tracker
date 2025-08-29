@@ -6,7 +6,16 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { Filter, Plus } from "lucide-react"
+import { ChevronLeft, ChevronRight, ChevronDownIcon, Filter, Icon, Plus } from "lucide-react"
+import { Dialog, DialogHeader, DialogContent, DialogTrigger, DialogTitle, DialogClose, DialogFooter } from "@/components/ui/dialog"
+import { Textarea } from "./ui/textarea"
+import { Calendar } from "@/components/ui/calendar"
+import { Label } from "@/components/ui/label"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 interface Incident {
   id: string
@@ -47,6 +56,8 @@ const initialData: Incident[] = [
 
 export default function DataTable() {
   const [data, setData] = useState<Incident[]>(initialData)
+  const [date, setDate] = useState<Date | undefined>(undefined)
+  const [open, setOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [showFilter, setShowFilter] = useState("All")
   const [sortBy, setSortBy] = useState("Default")
@@ -82,13 +93,13 @@ export default function DataTable() {
             placeholder="Search Complaint"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="max-w-sm bg-gray-100 active:outline-gray-700 border-[#666666]"
+            className="max-w-sm bg-gray-100 rounded-none active:outline-gray-700 border-[#666666]"
           />
 
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-600">Show:</span>
-            <Select value={showFilter} onValueChange={setShowFilter}>
-              <SelectTrigger className="w-24 bg-gray-100 border-[#666666]">
+            <Select value={showFilter} onValueChange={setShowFilter} >
+              <SelectTrigger className="w-24 bg-gray-100 border-[#666666] rounded-none">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -103,7 +114,7 @@ export default function DataTable() {
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-600">Sort by:</span>
             <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-28 bg-gray-100 border-[#666666]">
+              <SelectTrigger className="w-28 bg-gray-100 border-[#666666] rounded-none">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -114,23 +125,97 @@ export default function DataTable() {
             </Select>
           </div>
 
-          <Button variant="outline" size="sm" className="bg-gray-100 border-[#666666]">
+          <Button variant="outline" size="sm" className="bg-gray-100 border-[#666666] rounded-none">
             <Filter className="h-4 w-4 mr-2" />
             Filter
           </Button>
         </div>
+        <Dialog>
+          <DialogTrigger asChild>  
+            <Button className="bg-[#F11114] hover:bg-red-600 text-white">
+              <Plus className="h-4 w-4 mr-2" />
+              Add Incident
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[54rem] rounded-none bg-[#D9D9D9] text-black">
+            <DialogHeader>
+              <DialogTitle className="text-2xl text-center">Incident Form</DialogTitle>
+             
+            </DialogHeader>
+            {/* Form fields for adding a new incident */}
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-1 gap-2">
+              <div className="flex flex-col gap-3">
+                <Label htmlFor="date" className="px-1">
+                  Date
+                </Label>
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      id="date"
+                      className=" rounded-none justify-between hover:bg-sky-600 font-normal"
+                    >
+                      {date ? date.toLocaleDateString() : "14 Aug 2025"}
+                      <ChevronDownIcon />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="overflow-hidden border-[#C3C3C3] p-4" align="end" side="top" >
+                    <Calendar
+                      mode="single"
+                      selected={date}
+                      onSelect={(date) => {
+                        setDate(date)
+                        setOpen(false)
+                      }}
+                      components={{
+                        Chevron: (props) =>
+                          props.orientation === "left" ? (
+                            <ChevronLeft className="size-6 text-black stroke-1 shadow-lg rounded-full" />
+                          ) : (
+                            <ChevronRight className="size-6 text-black stroke-1 shadow-lg rounded-full" />
+                          ),
+                      }}
+                      className="hover:bg-sky-600 rounded-none text-black"
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div> 
+              </div>
+              <div className="grid grid-cols-1 gap-2">
+                <label className="text-sm font-medium">Complainant</label>
+                <Input type="text" placeholder="Enter your name" className="bg-gray-100 rounded-none border-[#666666]" />
+              </div>
+              <div className="grid grid-cols-1 gap-2">
+                <label className="text-sm font-medium">Maintenace Needed</label>
+                <Input type="text" placeholder="Type your message" className="bg-gray-100 rounded-none border-[#666666]" />
+              </div>
+              <div className="grid grid-cols-1 gap-2">
+                <label className="text-sm font-medium">Comment</label>
+                <Textarea placeholder="State your issue" className="bg-gray-100 rounded-none min-h-[10rem] max-h-min border-[#666666]" />
+              </div>
+             
+            </div>
+            <DialogFooter>  
+              <DialogClose asChild>  
+                <Button className="bg-[#D9D9D9] border-1 border-black rounded-none text-black hover:bg-gray-200 mr-2">
+                  Cancel
+                </Button>
+              </DialogClose>  
+              <Button className="bg-[#0A86C9] border-1 border-black rounded-none hover:bg-blue-600 text-white">
+                Submit
+              </Button>
+           </DialogFooter>
 
-        <Button className="bg-red-500 hover:bg-red-600 text-white">
-          <Plus className="h-4 w-4 mr-2" />
-          Add Incident
-        </Button>
+          </DialogContent>
+        </Dialog>
       </div>
 
       {/* Table */}
-      <div className="border border-[#666666] rounded-lg bg-white">
+      <div className="border border-[#666666] rounded-none bg-white">
         <Table>
           <TableHeader>
-            <TableRow className="rounded-lg bg-[#C3C3C3] hover:bg-[#C3C3C3] text-black">
+            <TableRow className="rounded-none bg-[#C3C3C3] hover:bg-[#C3C3C3] text-black">
               <TableHead className="font-medium text-black border-r  border-[#666666]">Date</TableHead>
               <TableHead className="font-medium text-black border-r border-[#666666]">Comment</TableHead>
               <TableHead className="font-medium text-black border-r border-[#666666]">Complainant</TableHead>
@@ -146,7 +231,7 @@ export default function DataTable() {
                 <TableCell className="border-r border-[#666666]">{item.complainant}</TableCell>
                 <TableCell className="border-r border-[#666666]">{item.maintenance}</TableCell>
                 <TableCell>
-                  <Badge className={`${getActionBadgeColor(item.action)} text-white ms-12 `}>{item.action}</Badge>
+                  <Badge className={`${getActionBadgeColor(item.action)} text-white rounded-4xl ms-12 `}>{item.action}</Badge>
                 </TableCell>
               </TableRow>
             ))}
