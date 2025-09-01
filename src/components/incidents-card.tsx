@@ -160,7 +160,7 @@ export function IncidentsCard() {
                       fill="#d1d5db"
                       radius={[2, 2, 0, 0]}
                       maxBarSize={20}
-                      data={getChartData().map(d => ({ ...d, value: 100 - d.value }))}
+                      data={getChartData().map((d) => ({ ...d, value: 100 - d.value }))}
                     />
                   </BarChart>
                 </ResponsiveContainer>

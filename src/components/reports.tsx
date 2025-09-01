@@ -162,18 +162,18 @@ export default function Reports() {
             <CardContent>
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-cyan-200 hover:bg-cyan-200">
-                    <TableHead className="text-center font-medium text-black">Type of machine</TableHead>
-                    <TableHead className="text-center font-medium text-black">Maintenance Date</TableHead>
-                    <TableHead className="text-center font-medium text-black">Maintenance Needed</TableHead>
+                  <TableRow className="bg-[#43C2F1] hover:bg-cyan-200">
+                    <TableHead className="text-center font-light py-8 border border-gray-400 text-sm text-black">Type of machine</TableHead>
+                    <TableHead className="text-center font-light py-8 border border-gray-400 text-sm text-black">Maintenance Date</TableHead>
+                    <TableHead className="text-center font-light py-8 border border-gray-400 text-sm text-black">Maintenance Needed</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {maintenanceData.map((row) => (
-                    <TableRow key={row.id} className="bg-cyan-50 hover:bg-cyan-100">
-                      <TableCell className="h-12 text-center">{row.machine}</TableCell>
-                      <TableCell className="h-12 text-center">{row.date}</TableCell>
-                      <TableCell className="h-12 text-center">{row.needed}</TableCell>
+                    <TableRow key={row.id} className="bg-[#CBF8FC] hover:bg-white">
+                      <TableCell className="h-12 border border-[#C3C3C3] text-center">{row.machine}</TableCell>
+                      <TableCell className="h-12 border border-[#C3C3C3] text-center">{row.date}</TableCell>
+                      <TableCell className="h-12 border border-[#C3C3C3] text-center">{row.needed}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

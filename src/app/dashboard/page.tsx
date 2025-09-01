@@ -2,15 +2,12 @@ import { SectionCards } from "@/components/section-cards"
 import { ChartLineMultiple } from "@/components/chart-line-multiple"
 import { IncidentsCard }  from "@/components/incidents-card"
 import ScheduleCalendar  from "@/components/schedule-calendar"
+import Header from "@/components/layout/header"
 
 export default function Page() {
   return (
     <div className="flex flex-col gap-4 p-4  mb-2 ">
-      <div className="flex items-center justify-between">
-        <div className="w-[99%] h-[6rem] p-6 bg-foreground">
-          <h1 className="text-white text-2xl italic mt-2">DASHBOARD</h1>
-        </div>
-      </div>
+      <Header title="DASHBOARD" />
       <div className="flex flex-col gap-1">
         <SectionCards />
         <div className="flex">

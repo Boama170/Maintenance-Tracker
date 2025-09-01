@@ -1,8 +1,11 @@
+import Header from '@/components/layout/header'
 import React from 'react'
 
 function Page() {
   return (
-    <div>Page</div>
+    <div>
+      <Header title="MACHINES" />
+    </div>
   )
 }
 
