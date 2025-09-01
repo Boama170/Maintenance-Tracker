@@ -6,39 +6,29 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ChevronLeft, ChevronRight, Plus, Edit, Trash2, Calendar } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { Plus, Calendar } from "lucide-react"
+import FullCalendar from "@fullcalendar/react"
+import dayGridPlugin from "@fullcalendar/daygrid"
+import interactionPlugin from "@fullcalendar/interaction"
+import timeGridPlugin from "@fullcalendar/timegrid"
 
 interface Event {
   id: string
   title: string
   description?: string
-  day: number
-  startTime: number
-  endTime: number
-  color: string
+  start: string
+  end: string
+  backgroundColor: string
   type: "meeting" | "task" | "appointment" | "other"
 }
 
-const DAYS = [
-  { name: "Mon", date: 25 },
-  { name: "Tue", date: 26 },
-  { name: "Wed", date: 27 },
-  { name: "Thu", date: 28 },
-  { name: "Fri", date: 29 },
-  { name: "Sat", date: 30 },
-  { name: "Sun", date: 31 },
-]
-
-const TIME_SLOTS = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm"]
-
 const EVENT_COLORS = [
-  { name: "Blue", value: "bg-blue-400", hover: "hover:bg-blue-500" },
-  { name: "Green", value: "bg-green-400", hover: "hover:bg-green-500" },
-  { name: "Yellow", value: "bg-yellow-400", hover: "hover:bg-yellow-500" },
-  { name: "Red", value: "bg-red-400", hover: "hover:bg-red-500" },
-  { name: "Purple", value: "bg-purple-400", hover: "hover:bg-purple-500" },
-  { name: "Gray", value: "bg-gray-400", hover: "hover:bg-gray-500" },
+  { name: "Blue", value: "#60a5fa" },
+  { name: "Green", value: "#4ade80" },
+  { name: "Yellow", value: "#facc15" },
+  { name: "Red", value: "#f87171" },
+  { name: "Purple", value: "#a78bfa" },
+  { name: "Gray", value: "#9ca3af" },
 ]
 
 export default function WeeklyScheduler() {
@@ -47,98 +37,104 @@ export default function WeeklyScheduler() {
       id: "1",
       title: "Team Meeting",
       description: "Weekly standup",
-      day: 27,
-      startTime: 9,
-      endTime: 10,
-      color: "bg-green-400",
+      start: "2025-08-27T09:00:00",
+      end: "2025-08-27T10:00:00",
+      backgroundColor: "#4ade80",
       type: "meeting",
     },
     {
       id: "2",
       title: "Lunch Break",
       description: "Team lunch",
-      day: 28,
-      startTime: 11,
-      endTime: 12,
-      color: "bg-yellow-400",
+      start: "2025-08-28T11:00:00",
+      end: "2025-08-28T12:00:00",
+      backgroundColor: "#facc15",
       type: "other",
     },
     {
       id: "3",
       title: "Client Call",
       description: "Project review",
-      day: 27,
-      startTime: 13,
-      endTime: 14,
-      color: "bg-red-400",
+      start: "2025-08-27T13:00:00",
+      end: "2025-08-27T14:00:00",
+      backgroundColor: "#f87171",
       type: "appointment",
     },
     {
       id: "4",
       title: "Workshop",
       description: "Training session",
-      day: 30,
-      startTime: 10,
-      endTime: 11,
-      color: "bg-blue-400",
+      start: "2025-08-30T10:00:00",
+      end: "2025-08-30T11:00:00",
+      backgroundColor: "#60a5fa",
       type: "meeting",
     },
     {
       id: "5",
       title: "Code Review",
       description: "PR review",
-      day: 29,
-      startTime: 16,
-      endTime: 17,
-      color: "bg-gray-400",
+      start: "2025-08-29T16:00:00",
+      end: "2025-08-29T17:00:00",
+      backgroundColor: "#9ca3af",
       type: "task",
     },
   ])
 
-  const [selectedSlot, setSelectedSlot] = useState<{ day: number; time: number } | null>(null)
-  const [editingEvent, setEditingEvent] = useState<Event | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [currentMonth, setCurrentMonth] = useState("August 2025")
+  const [editingEvent, setEditingEvent] = useState<Event | null>(null)
+  const [selectedDate, setSelectedDate] = useState<string>("")
 
   const [eventForm, setEventForm] = useState({
     title: "",
     description: "",
-    color: "bg-blue-400",
+    backgroundColor: "#60a5fa",
     type: "meeting" as Event["type"],
-    startTime: 8,
-    endTime: 9,
+    startTime: "09:00",
+    endTime: "10:00",
   })
 
-  const handleCellClick = (day: number, timeIndex: number) => {
-    const existingEvent = getEventForSlot(day, timeIndex)
-    if (existingEvent) {
-      setEditingEvent(existingEvent)
+  const handleDateSelect = (selectInfo: any) => {
+    const startDate = selectInfo.start
+    const endDate = selectInfo.end || new Date(startDate.getTime() + 60 * 60 * 1000) // Default 1 hour
+
+    setSelectedDate(startDate.toISOString().split("T")[0])
+    setEventForm({
+      title: "",
+      description: "",
+      backgroundColor: "#60a5fa",
+      type: "meeting",
+      startTime: startDate.toTimeString().slice(0, 5),
+      endTime: endDate.toTimeString().slice(0, 5),
+    })
+    setEditingEvent(null)
+    setIsDialogOpen(true)
+  }
+
+  const handleEventClick = (clickInfo: any) => {
+    const event = events.find((e) => e.id === clickInfo.event.id)
+    if (event) {
+      setEditingEvent(event)
+      const startDate = new Date(event.start)
+      const endDate = new Date(event.end)
+
+      setSelectedDate(startDate.toISOString().split("T")[0])
       setEventForm({
-        title: existingEvent.title,
-        description: existingEvent.description || "",
-        color: existingEvent.color,
-        type: existingEvent.type,
-        startTime: existingEvent.startTime,
-        endTime: existingEvent.endTime,
+        title: event.title,
+        description: event.description || "",
+        backgroundColor: event.backgroundColor,
+        type: event.type,
+        startTime: startDate.toTimeString().slice(0, 5),
+        endTime: endDate.toTimeString().slice(0, 5),
       })
-      setIsDialogOpen(true)
-    } else {
-      setSelectedSlot({ day, time: timeIndex + 8 })
-      setEventForm({
-        title: "",
-        description: "",
-        color: "bg-blue-400",
-        type: "meeting",
-        startTime: timeIndex + 8,
-        endTime: timeIndex + 9,
-      })
-      setEditingEvent(null)
       setIsDialogOpen(true)
     }
   }
 
   const handleSaveEvent = () => {
-    if (!eventForm.title.trim()) return
+    if (!eventForm.title.trim() || !selectedDate) return
+
+    const startDateTime = `${selectedDate}T${eventForm.startTime}:00`
+    const endDateTime = `${selectedDate}T${eventForm.endTime}:00`
 
     if (editingEvent) {
       // Update existing event
@@ -149,33 +145,38 @@ export default function WeeklyScheduler() {
                 ...event,
                 title: eventForm.title,
                 description: eventForm.description,
-                color: eventForm.color,
+                backgroundColor: eventForm.backgroundColor,
                 type: eventForm.type,
-                startTime: eventForm.startTime,
-                endTime: eventForm.endTime,
+                start: startDateTime,
+                end: endDateTime,
               }
             : event,
         ),
       )
-    } else if (selectedSlot) {
+    } else {
       // Create new event
       const newEvent: Event = {
         id: Date.now().toString(),
         title: eventForm.title,
         description: eventForm.description,
-        day: selectedSlot.day,
-        startTime: eventForm.startTime,
-        endTime: eventForm.endTime,
-        color: eventForm.color,
+        start: startDateTime,
+        end: endDateTime,
+        backgroundColor: eventForm.backgroundColor,
         type: eventForm.type,
       }
       setEvents([...events, newEvent])
     }
 
     setIsDialogOpen(false)
-    setSelectedSlot(null)
     setEditingEvent(null)
-    setEventForm({ title: "", description: "", color: "bg-blue-400", type: "meeting", startTime: 8, endTime: 9 })
+    setEventForm({
+      title: "",
+      description: "",
+      backgroundColor: "#60a5fa",
+      type: "meeting",
+      startTime: "09:00",
+      endTime: "10:00",
+    })
   }
 
   const handleDeleteEvent = (eventId: string) => {
@@ -184,22 +185,8 @@ export default function WeeklyScheduler() {
     setEditingEvent(null)
   }
 
-  const getEventForSlot = (day: number, timeIndex: number) => {
-    return events.find((event) => event.day === day && event.startTime === timeIndex + 8)
-  }
-
-  const handlePrevMonth = () => {
-    // Mock navigation - in real app would change actual dates
-    console.log("Previous month clicked")
-  }
-
-  const handleNextMonth = () => {
-    // Mock navigation - in real app would change actual dates
-    console.log("Next month clicked")
-  }
-
   return (
-    <div className="w-full max-w-6xl mx-auto bg-white rounded-lg shadow-sm">
+    <div className="w-full max-w-6xl mx-auto bg-white">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b">
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -265,8 +252,8 @@ export default function WeeklyScheduler() {
                 <div>
                   <Label htmlFor="color">Color</Label>
                   <Select
-                    value={eventForm.color}
-                    onValueChange={(value) => setEventForm({ ...eventForm, color: value })}
+                    value={eventForm.backgroundColor}
+                    onValueChange={(value) => setEventForm({ ...eventForm, backgroundColor: value })}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -275,7 +262,7 @@ export default function WeeklyScheduler() {
                       {EVENT_COLORS.map((color) => (
                         <SelectItem key={color.value} value={color.value}>
                           <div className="flex items-center gap-2">
-                            <div className={cn("w-4 h-4 rounded", color.value)} />
+                            <div className="w-4 h-4 rounded" style={{ backgroundColor: color.value }} />
                             {color.name}
                           </div>
                         </SelectItem>
@@ -288,40 +275,22 @@ export default function WeeklyScheduler() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="startTime">Start Time</Label>
-                  <Select
-                    value={eventForm.startTime.toString()}
-                    onValueChange={(value) => setEventForm({ ...eventForm, startTime: Number.parseInt(value) })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {TIME_SLOTS.map((time, index) => (
-                        <SelectItem key={time} value={(index + 8).toString()}>
-                          {time}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Input
+                    id="startTime"
+                    type="time"
+                    value={eventForm.startTime}
+                    onChange={(e) => setEventForm({ ...eventForm, startTime: e.target.value })}
+                  />
                 </div>
 
                 <div>
                   <Label htmlFor="endTime">End Time</Label>
-                  <Select
-                    value={eventForm.endTime.toString()}
-                    onValueChange={(value) => setEventForm({ ...eventForm, endTime: Number.parseInt(value) })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {TIME_SLOTS.map((time, index) => (
-                        <SelectItem key={time} value={(index + 8).toString()}>
-                          {time}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Input
+                    id="endTime"
+                    type="time"
+                    value={eventForm.endTime}
+                    onChange={(e) => setEventForm({ ...eventForm, endTime: e.target.value })}
+                  />
                 </div>
               </div>
 
@@ -331,7 +300,6 @@ export default function WeeklyScheduler() {
                 </Button>
                 {editingEvent && (
                   <Button variant="destructive" onClick={() => handleDeleteEvent(editingEvent.id)} className="gap-2">
-                    <Trash2 className="w-4 h-4" />
                     Delete
                   </Button>
                 )}
@@ -340,74 +308,82 @@ export default function WeeklyScheduler() {
           </DialogContent>
         </Dialog>
 
-        <div className="flex items-center gap-4">
-          <Button variant="ghost" size="sm" onClick={handlePrevMonth}>
-            <ChevronLeft className="w-4 h-4" />
-          </Button>
-          <h2 className="text-lg font-semibold">{currentMonth}</h2>
-          <Button variant="ghost" size="sm" onClick={handleNextMonth}>
-            <ChevronRight className="w-4 h-4" />
-          </Button>
-        </div>
-
         <Button size="sm" className="bg-red-500 rounded-2xl hover:bg-red-600 text-white">
           Submit
         </Button>
       </div>
 
-      {/* Calendar Grid */}
-      <div className="overflow-x-auto">
-        <div className="min-w-[800px]">
-          {/* Days Header */}
-          <div className="grid grid-cols-8 border-b">
-            <div className="p-3"></div>
-            {DAYS.map((day) => (
-              <div key={day.date} className="p-3 text-center border-l">
-                <div className="font-medium text-sm">
-                  {day.name} {day.date}
-                </div>
-              </div>
-            ))}
-          </div>
+      <div className="p-12">
+        <FullCalendar
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          initialView="timeGridWeek"
+          initialDate="2025-08-25"
+          headerToolbar={{
+            left: "prev",
+            center: "title",
+            right: "next",
+          }}
+          titleFormat={{ month: "long", year: "numeric" }}
+          slotMinTime="08:00:00"
+          slotMaxTime="18:00:00"
+          allDaySlot={false}
+          height="700px"
+          events={events}
+          selectable={true}
+          expandRows={true}
+          selectMirror={true}
+          dayMaxEvents={true}
+          weekends={true}
+          select={handleDateSelect}
+          eventClick={handleEventClick}
+          slotDuration="01:00:00"
+          slotLabelInterval="01:00:00"
+          slotLabelFormat={{
+            hour: "numeric",
+            minute: "2-digit",
+            omitZeroMinute: false,
+            meridiem: "short",
+          }}
+          eventDisplay="block"
+          eventBackgroundColor="transparent"
+          eventBorderColor="transparent"
+          eventTextColor="white"
+          dayHeaderFormat={{ weekday: "short", day: "numeric" }}
+        />
 
-          {/* Time Slots */}
-          {TIME_SLOTS.map((time, timeIndex) => (
-            <div key={time} className="grid grid-cols-8 border-b">
-              <div className="p-3 text-sm font-medium text-gray-600 border-r">{time}</div>
-              {DAYS.map((day) => {
-                const event = getEventForSlot(day.date, timeIndex)
-                const isSelected = selectedSlot?.day === day.date && selectedSlot?.time === timeIndex + 8
-
-                return (
-                  <div
-                    key={`${day.date}-${timeIndex}`}
-                    className={cn(
-                      "p-3 border-l min-h-[60px] cursor-pointer hover:bg-gray-50 relative transition-colors",
-                      isSelected && "bg-blue-50",
-                    )}
-                    onClick={() => handleCellClick(day.date, timeIndex)}
-                  >
-                    {event && (
-                      <div
-                        className={cn(
-                          "absolute inset-1 rounded px-2 py-1 text-xs font-medium text-white flex items-center justify-between group",
-                          event.color,
-                          "hover:opacity-90 transition-opacity",
-                        )}
-                      >
-                        <div className="truncate">
-                          <div className="font-semibold">{event.title}</div>
-                          {event.description && <div className="text-xs opacity-90 truncate">{event.description}</div>}
-                        </div>
-                        <Edit className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity ml-1 flex-shrink-0" />
-                      </div>
-                    )}
-                  </div>
-                )
-              })}
-            </div>
-          ))}
-        </div>
+        <style jsx global>{`
+          .fc-prev-button,
+          .fc-next-button {
+            background-color: transparent !important;
+            color: #374151 !important;
+            padding: 4px 8px !important;
+            font-size: 14px !important;
+            
+            border: none !important
+          }
+          
+          .fc-prev-button:hover,
+          .fc-next-button:hover {
+            background-color: #e5e7eb !important;
+          }
+          
+          .fc-prev-button:focus,
+          .fc-next-button:focus {
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5) !important;
+          }
+          
+          .fc-toolbar-title {
+            font-size: 1.5rem !important;
+            font-weight: 600 !important;
+            color: #111827 !important;
+            margin: 0 16px !important;
+          }
+          
+          .fc-toolbar-chunk {
+            display: flex !important;
+            align-items: center !important;
+          }
+        `}</style>
       </div>
     </div>
   )
