@@ -10,7 +10,7 @@ import {
 
 interface DashboardLayoutProps {
   children: ReactNode
-  params: { title?: string }
+  params: Promise<{ title?: string }>
 }
 
 const inter = Inter({
