@@ -21,6 +21,7 @@ const mockScheduleItems: ScheduleItem[] = [
 ]
 
 export default function ScheduleComponent() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date(2025, 7, 28)) // August 28, 2025
   const [currentMonth, setCurrentMonth] = useState(new Date(2025, 7, 1)) // August 2025
 

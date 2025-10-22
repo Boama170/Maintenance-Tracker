@@ -93,9 +93,9 @@ export default function WeeklyScheduler() {
     endTime: "10:00",
   })
 
-  const handleDateSelect = (selectInfo: any) => {
-    const startDate = selectInfo.start
-    const endDate = selectInfo.end || new Date(startDate.getTime() + 60 * 60 * 1000) // Default 1 hour
+  const handleDateSelect = (selectInfo: unknown) => {
+    const startDate = (selectInfo as { start: Date }).start
+    const endDate = (selectInfo as { end?: Date }).end || new Date(startDate.getTime() + 60 * 60 * 1000) // Default 1 hour
 
     setSelectedDate(startDate.toISOString().split("T")[0])
     setEventForm({
@@ -110,8 +110,8 @@ export default function WeeklyScheduler() {
     setIsDialogOpen(true)
   }
 
-  const handleEventClick = (clickInfo: any) => {
-    const event = events.find((e) => e.id === clickInfo.event.id)
+  const handleEventClick = (clickInfo: unknown) => {
+    const event = events.find((e) => e.id === (clickInfo as { event: { id: string } }).event.id)
     if (event) {
       setEditingEvent(event)
       const startDate = new Date(event.start)
@@ -388,3 +388,11 @@ export default function WeeklyScheduler() {
     </div>
   )
 }
+
+
+// preveentive, unplanned, scheduled, emergency
+// colors; critical, priority, 
+//merge
+
+//report page: dropdown with report type, start date, end date
+//rendering a table for the type

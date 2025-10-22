@@ -124,5 +124,27 @@ input:focus{
   color: inherit !important; /* keep icon color */
 }
 
+/* Remove borders and focus rings from select triggers */
+[data-slot="select-trigger"] {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+[data-slot="select-trigger"]:focus-visible {
+  ring: 0 !important;
+  border: none !important;
+}
+
+/* Remove blue hover from select items */
+[data-slot="select-item"]:focus {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+[data-slot="select-item"]:hover {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
 
 

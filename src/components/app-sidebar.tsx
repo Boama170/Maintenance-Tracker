@@ -28,6 +28,7 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const pathname = usePathname()
 
   return (
